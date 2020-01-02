@@ -360,14 +360,16 @@ rostest: px4_sitl_default
 tests_integration: px4_sitl_default
 	@$(MAKE) --no-print-directory px4_sitl_default sitl_gazebo
 	@$(MAKE) --no-print-directory px4_sitl_default mavsdk_tests
-	@"$(SRC_DIR)"/test/mavsdk_tests/mavsdk_test_runner.py --speed-factor 100
+	@"$(SRC_DIR)"/test/mavsdk_tests/mavsdk_test_runner.py --speed-factor 30
 
 tests_integration_coverage:
 	@$(MAKE) clean
 	@$(MAKE) --no-print-directory px4_sitl_default PX4_CMAKE_BUILD_TYPE=Coverage
 	@$(MAKE) --no-print-directory px4_sitl_default sitl_gazebo
 	@$(MAKE) --no-print-directory px4_sitl_default mavsdk_tests
-	@"$(SRC_DIR)"/test/mavsdk_tests/mavsdk_test_runner.py --speed-factor 20 --iterations 1 --fail-early
+	@"$(SRC_DIR)"/test/mavsdk_tests/mavsdk_test_runner.py --speed-factor 30
+	@mkdir -p coverage
+	@lcov --directory build/px4_sitl_default --base-directory build/px4_sitl_default --gcov-tool gcov --capture -o coverage/lcov.info
 
 tests_mission: rostest
 	@"$(SRC_DIR)"/test/rostest_px4_run.sh mavros_posix_tests_missions.test
